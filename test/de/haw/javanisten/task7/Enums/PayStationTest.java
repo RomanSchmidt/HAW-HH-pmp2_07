@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PayStationTest {
 
     @Test
-    void addCoin100() {
-        PayStation station = new PayStation(100);
+    void gotoHell() {
+        PayStation station = new PayStation(TicketType.ToHell);
         assertEquals(0, station.getValue());
         assertEquals(PaymentStateMachine.empty, station.getState());
         station.addCoin(Coin.dime);
@@ -18,6 +18,22 @@ class PayStationTest {
         assertEquals(Coin.dime.value + Coin.quarter.value, station.getValue());
         assertEquals(PaymentStateMachine.partly, station.getState());
         station.addCoin(Coin.dollar);
+        assertEquals(0, station.getValue());
+        assertEquals(PaymentStateMachine.empty, station.getState());
+    }
+
+    @Test
+    void reset() {
+        PayStation station = new PayStation(TicketType.ToHell);
+        assertEquals(0, station.getValue());
+        assertEquals(PaymentStateMachine.empty, station.getState());
+        station.addCoin(Coin.quarter);
+        assertEquals(Coin.quarter.value, station.getValue());
+        assertEquals(PaymentStateMachine.partly, station.getState());
+        station.addCoin(Coin.halfDollar);
+        assertEquals(Coin.halfDollar.value + Coin.quarter.value, station.getValue());
+        assertEquals(PaymentStateMachine.partly, station.getState());
+        station.cancel();
         assertEquals(0, station.getValue());
         assertEquals(PaymentStateMachine.empty, station.getState());
     }

@@ -2,18 +2,17 @@ package de.haw.javanisten.task7.Enums;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class PayStation {
 
-    private final int _ticketPrice;
+    private final TicketType _ticket;
+    private final ArrayList<Coin> _coins = new ArrayList<>();
     public PaymentStateMachine _state = PaymentStateMachine.empty;
     private int _value = 0;
 
-
-    public PayStation(int ticketPriceInCent) {
-        if (ticketPriceInCent <= 0) {
-            throw new IllegalArgumentException("price must be over 0");
-        }
-        this._ticketPrice = ticketPriceInCent;
+    public PayStation(TicketType ticket) {
+        this._ticket = ticket;
         this._state.enterState(this);
     }
 
@@ -22,11 +21,16 @@ public class PayStation {
     }
 
     public int getPrice() {
-        return this._ticketPrice;
+        return this._ticket.getPrice();
+    }
+
+    public TicketType getTicketType() {
+        return this._ticket;
     }
 
     public void addCoin(@NotNull Coin coin) {
         this._value += coin.value;
+        this._coins.add(coin);
         this._checkState(coin);
     }
 
@@ -43,7 +47,7 @@ public class PayStation {
     private void _switchState() {
         switch (this._state) {
             case correct:
-                this._giveTicket();
+                this._clear();
                 break;
             case tooMuch:
                 this._returnMoney();
@@ -56,17 +60,28 @@ public class PayStation {
         return this._value;
     }
 
-    private void _giveTicket() {
+    public ArrayList<Coin> getCoins() {
+        return this._coins;
+    }
+
+    private void _clear() {
+        this._coins.clear();
         this._value = 0;
         this._state = PaymentStateMachine.empty;
         this._state.enterState(this);
     }
 
+    public void cancel() {
+        this._state = PaymentStateMachine.cancel;
+        this._state.enterState(this);
+        this._clear();
+    }
+
     private void _returnMoney() {
-        final int diff = this._ticketPrice - this._value;
+        final int diff = this._ticket.getPrice() - this._value;
 
         if (diff < 0) {
-            this._value = this._ticketPrice;
+            this._value = this._ticket.getPrice();
         }
     }
 }
