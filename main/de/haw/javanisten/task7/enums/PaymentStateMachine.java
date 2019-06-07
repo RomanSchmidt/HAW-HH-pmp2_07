@@ -1,4 +1,4 @@
-package de.haw.javanisten.task7.Enums;
+package de.haw.javanisten.task7.enums;
 
 import org.jetbrains.annotations.NotNull;
 

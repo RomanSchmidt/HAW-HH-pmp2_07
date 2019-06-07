@@ -24,3 +24,25 @@ man vorher auf Reset "drückt".
 Der Einfachheitshalber wurden die Ausgaben direkt in die Console geleitet. Diese werden nicht
 getestet und auch nicht für die Tests unterdrückt.
 
+## Fraktale
+Es wurden die Klassen für die Complex-Berechnung aus Aufgabe 1 in Form eines Packages hinzugefügt.
+
+Zudem wurde der Code aus dem Beispiel ebenfalls als eigenes Unterpackage hinzugefügt.
+
+Eine module-info wurde angelegt.
+
+Um die Complexklasse zu überschreiben, wurde ein Package angelegt mit dem namen ...demo.mutable.
+Dort gibt es eine von dem Paralleldemo überschrieben um eine Methode an zu legen, die dafür sorgt,
+dass die MandelbrotSetTask-Klasse erzeugt wird. Das wurde im Originalcode ausgelagert.
+Zusätzlich wurden einige private methoden und variablen protected gemacht.
+
+Die Main in demo.mutable hat eine Konstante, die dafür sorgt, dass die neue MandelbrotSetTask eine
+mutable oder immutable variante der eigenen Complexklasse erzeugt.
+
+Der Unterschied bei Position 3:
+- mutable
+  - sequential: 0:02.75
+  - parallel: 0:00.65
+- immutable
+  - sequential: 0:04.82
+  - parallel: 0:02.14
