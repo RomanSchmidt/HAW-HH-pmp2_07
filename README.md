@@ -24,6 +24,28 @@ man vorher auf Reset "drückt".
 Der Einfachheitshalber wurden die Ausgaben direkt in die Console geleitet. Diese werden nicht
 getestet und auch nicht für die Tests unterdrückt.
 
+## Goto Bible
+Die unterschiedlichen Formate und Codierungen der beiden Textdateien wurden berücksichtigt.
+
+Es wird jeweils eine datei in ein Map für de und eine für en angelegt. Dabei wurden mehrdimensionale 
+HashMaps benutzt. Es wird dort wie folgt gespeichert:
+```
+{
+  [book: String]: {
+    [section: Int]: {
+      [verse: Int]: value: String
+    }
+  }
+}
+```
+Es wurde ein Mapping angelegt um die Abkürzungen der Bücher wieder auf zu lösen. Das gleiche Mapping
+wird auch für die Suche benutzt. Es ist also möglich nach beiden Varianten zu suchen.
+
+Es wurde split mit regex benutzt um die aufteilung des Abschnitts:Verse zu finden und nach ihm zu spalten.
+
+In den Tests kann man sowohl einen Get davon in beiden Schreibweisen des Buches sehen, sowie auch
+ein nicht match.
+
 ## Fraktale
 Es wurden die Klassen für die Complex-Berechnung aus Aufgabe 1 in Form eines Packages hinzugefügt.
 
