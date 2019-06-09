@@ -1,4 +1,6 @@
-package de.haw.javanisten.complex;
+package de.haw.javanisten.task1.complex;
+
+import org.jetbrains.annotations.Contract;
 
 /**
  * @author Roman Schmidt, Stanislaw Brug
@@ -9,6 +11,7 @@ public class Polar {
     private double _alpha;
     private double _abs;
 
+    @Contract(pure = true)
     public Polar(double alpha, double abs) {
         this._alpha = alpha;
         this._abs = abs;
@@ -26,6 +29,7 @@ public class Polar {
         return MathUtils.getCartesianFromPolar(this);
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object other) {
         if (this == other) {

@@ -1,4 +1,6 @@
-package de.haw.javanisten.complex;
+package de.haw.javanisten.task1.complex;
+
+import org.jetbrains.annotations.Contract;
 
 /**
  * @author Roman Schmidt, Stanislaw Brug
@@ -9,6 +11,7 @@ public class Cartesian {
     private double _imag;
     private double _real;
 
+    @Contract(pure = true)
     public Cartesian(double real, double imag) {
         this._imag = imag;
         this._real = real;
@@ -26,6 +29,7 @@ public class Cartesian {
         return MathUtils.getPolarFromCartesian(this);
     }
 
+    @Contract(value = "null -> false", pure = true)
     public boolean equals(Object other) {
         if (this == other) {
             return true;

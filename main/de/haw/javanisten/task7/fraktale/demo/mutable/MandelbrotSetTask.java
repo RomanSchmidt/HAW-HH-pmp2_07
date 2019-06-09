@@ -1,7 +1,7 @@
 package de.haw.javanisten.task7.fraktale.demo.mutable;
 
-import de.haw.javanisten.complex.Cartesian;
-import de.haw.javanisten.complex.Complex;
+import de.haw.javanisten.task1.complex.Cartesian;
+import de.haw.javanisten.task1.complex.Complex;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 

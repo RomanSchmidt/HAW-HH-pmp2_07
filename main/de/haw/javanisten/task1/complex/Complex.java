@@ -1,4 +1,7 @@
-package de.haw.javanisten.complex;
+package de.haw.javanisten.task1.complex;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -18,38 +21,39 @@ public class Complex {
     private double _imag;
     private double _real;
 
-    public Complex(Cartesian cartesian) {
+    public Complex(@NotNull Cartesian cartesian) {
         this(cartesian.getReal(), cartesian.getImag(), Type.cartesian, Complex._defaultMutable);
     }
 
-    public Complex(Polar polar) {
+    public Complex(@NotNull Polar polar) {
         this(polar.getCartesian(), Type.polar, Complex._defaultMutable);
     }
 
-    public Complex(Polar polar, boolean mutable) {
+    public Complex(@NotNull Polar polar, boolean mutable) {
         this(polar.getCartesian(), Type.polar, mutable);
     }
 
-    public Complex(Cartesian cartesian, boolean mutable) {
+    public Complex(@NotNull Cartesian cartesian, boolean mutable) {
         this(cartesian.getReal(), cartesian.getImag(), Type.cartesian, mutable);
     }
 
-    public Complex(Cartesian cart, Type type, boolean mutable) {
+    public Complex(@NotNull Cartesian cart, Type type, boolean mutable) {
         this(cart.getReal(), cart.getImag(), type, mutable);
     }
 
-    public Complex(Polar polar, Type type, boolean mutable) {
+    public Complex(@NotNull Polar polar, Type type, boolean mutable) {
         this(polar.getCartesian(), type, mutable);
     }
 
-    public Complex(Cartesian cart, Type type) {
+    public Complex(@NotNull Cartesian cart, Type type) {
         this(cart.getReal(), cart.getImag(), type, Complex._defaultMutable);
     }
 
-    public Complex(Polar polar, Type type) {
+    public Complex(@NotNull Polar polar, Type type) {
         this(polar.getCartesian(), type, Complex._defaultMutable);
     }
 
+    @Contract(pure = true)
     private Complex(double real, double imag, Type type, boolean mutable) {
         this._type = type;
         this._isMutable = mutable;
@@ -100,6 +104,7 @@ public class Complex {
         return type == Type.cartesian ? this._toStringCartesian() : this._toStringPolar();
     }
 
+    @NotNull
     private String _toStringCartesian() {
         StringBuilder builder = new StringBuilder();
         String real = this.getReal() == 0 ? "0" : Double.toString(this.getReal());
@@ -116,6 +121,7 @@ public class Complex {
         return builder.toString();
     }
 
+    @NotNull
     private String _toStringPolar() {
         StringBuilder builder = new StringBuilder();
 
@@ -127,13 +133,13 @@ public class Complex {
         return builder.toString();
     }
 
-    public Complex plus(Complex otherAComplex) {
+    public Complex plus(@NotNull Complex otherAComplex) {
         double real = this.getReal() + otherAComplex.getReal();
         double imag = this.getImag() + otherAComplex.getImag();
         return this._applyChange(real, imag);
     }
 
-    public Complex minus(Complex otherAComplex) {
+    public Complex minus(@NotNull Complex otherAComplex) {
         double real = this.getReal() - otherAComplex.getReal();
         double imag = this.getImag() - otherAComplex.getImag();
         return this._applyChange(real, imag);
@@ -147,12 +153,13 @@ public class Complex {
         return this.multiply(MathUtils.reciprocal(otherAComplex));
     }
 
-    public Complex multiply(Complex otherAComplex) {
+    public Complex multiply(@NotNull Complex otherAComplex) {
         double real = this.getReal() * otherAComplex.getReal() - this.getImag() * otherAComplex.getImag();
         double imag = this.getReal() * otherAComplex.getImag() + this.getImag() * otherAComplex.getReal();
         return this._applyChange(real, imag);
     }
 
+    @Contract(value = "null -> false", pure = true)
     public boolean equals(Object other) {
         if (this == other) {
             return true;
