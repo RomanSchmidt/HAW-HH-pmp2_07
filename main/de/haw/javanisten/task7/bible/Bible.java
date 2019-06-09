@@ -14,25 +14,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Bible {
-    private final String _deVersionFile = "de.txt";
-    private final Charset _deVersionCharset = Charset.forName("windows-1252");
-    private final String _enVersionFile = "en.txt";
-    private final Charset _enVersionCharset = Charset.forName("utf-8");
+    private static final String _deVersionFile = "de.txt";
+    private static final Charset _deVersionCharset = Charset.forName("windows-1252");
+    private static final String _enVersionFile = "en.txt";
+    private static final Charset _enVersionCharset = Charset.forName("utf-8");
+    private static final String _regExString = "[ \t](\\d+:\\d+)[ \t]";
+
     private HashMap<String, HashMap<Integer, HashMap<Integer, String>>> _indexDe = new HashMap<>();
     private HashMap<String, HashMap<Integer, HashMap<Integer, String>>> _indexEn = new HashMap<>();
-
     private HashMap<String, String> _bookMap = new HashMap<>();
 
-    Bible() throws IOException {
+    Bible() {
         this._init();
     }
 
-    private void _readIndex(String filName, HashMap<String, HashMap<Integer, HashMap<Integer, String>>> map, Charset charset) throws IOException {
+    private void _readIndex(String filName, HashMap<String, HashMap<Integer, HashMap<Integer, String>>> map, Charset charset) {
         BufferedReader fileHandler = this._getReadHandler(filName, charset);
         if (null != fileHandler) {
             fileHandler.lines().forEach(line -> {
-                String[] splitted1 = line.split("( |\t)\\d+:\\d+( |\t)+", 2);
-                Pattern pattern = Pattern.compile("[ \t](\\d+:\\d+)[ \t]");
+                Pattern pattern = Pattern.compile(Bible._regExString);
+                String[] splitted1 = line.split(Bible._regExString, 2);
                 Matcher matcher = pattern.matcher(line);
                 if (splitted1.length == 2 && matcher.find()) {
                     String[] sectionVerse = matcher.group(1).split(":");
@@ -43,7 +44,11 @@ class Bible {
                     bySection.put(Integer.parseInt(sectionVerse[1]), splitted1[1]);
                 }
             });
-            fileHandler.close();
+            try {
+                fileHandler.close();
+            } catch (IOException e) {
+                // ignore
+            }
         }
     }
 
@@ -58,10 +63,10 @@ class Bible {
         return null;
     }
 
-    private void _init() throws IOException {
+    private void _init() {
         this._fillBookMap();
-        this._readIndex(this._deVersionFile, this._indexDe, this._deVersionCharset);
-        this._readIndex(this._enVersionFile, this._indexEn, this._enVersionCharset);
+        this._readIndex(Bible._deVersionFile, this._indexDe, Bible._deVersionCharset);
+        this._readIndex(Bible._enVersionFile, this._indexEn, Bible._enVersionCharset);
     }
 
     public HashMap<String, String> get(String book, int section, int verse) {
